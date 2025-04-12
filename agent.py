@@ -75,11 +75,14 @@ conversation = Conversation(
 
 # Simple callbacks that print the conversation to the console.
 callback_agent_response = lambda response: print(f"Agent: {response}")
-callback_agent_response_correction = lambda original, corrected: print(f"Agent: {original} -> {corrected}")
+callback_agent_response_correction = lambda original, corrected: print(
+    f"Agent: {original} -> {corrected}"
+)
 callback_user_transcript = lambda transcript: print(f"User: {transcript}")
 
 # Uncomment if you want to see latency measurements.
 callback_latency_measurement = lambda latency: print(f"Latency: {latency}ms")
+
 
 def run_conversation():
     """Function to run the conversation logic."""
@@ -92,8 +95,10 @@ def run_conversation():
     except Exception as e:
         print(f"Error during conversation: {e}")
 
+
 # Create a thread for the conversation
 conv_thread = threading.Thread(target=run_conversation)
+
 
 # Set up the signal handler
 def signal_handler(sig, frame):
@@ -101,6 +106,7 @@ def signal_handler(sig, frame):
     # Signal the conversation to end (assuming end_session is thread-safe
     # or signals wait_for_session_end appropriately)
     conversation.end_session()
+
 
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -121,4 +127,3 @@ print("Script finished.")
 # signal.signal(signal.SIGINT, lambda sig, frame: (print("Ctrl+C detected, attempting to end session..."), conversation.end_session()))
 # conversation_id = conversation.wait_for_session_end()
 # print(f"Conversation ID: {conversation_id}")
-
