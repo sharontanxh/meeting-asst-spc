@@ -5,4 +5,4 @@ requests
 pinecone
 openai
 tqdm
-python-dotenv
+tkinter
