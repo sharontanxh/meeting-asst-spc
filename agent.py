@@ -7,6 +7,7 @@ from elevenlabs.conversational_ai.conversation import ClientTools, Conversation
 from elevenlabs.conversational_ai.default_audio_interface import DefaultAudioInterface
 
 from jira_comment import add_jira_comment
+from jira_ticket import create_jira_ticket
 
 load_dotenv()
 
@@ -15,6 +16,7 @@ api_key: str = os.environ["ELEVENLABS_API_KEY"]
 
 
 client = ElevenLabs(api_key=api_key)
+
 
 def add_jira_comment_tool(parameters):
     ticket_key = parameters.get("ticket_key")
@@ -26,9 +28,30 @@ def add_jira_comment_tool(parameters):
         return {"success": False, "message": str(e)}
 
 
+def create_jira_ticket_tool(parameters):
+    project_key = parameters.get("project_key")
+    summary = parameters.get("summary")
+    description = parameters.get("description")
+    issue_type = parameters.get("issue_type", "Task")
+    labels = parameters.get("labels", [])
+
+    try:
+        result = create_jira_ticket(
+            project_key=project_key,
+            summary=summary,
+            description=description,
+            issue_type=issue_type,
+            labels=labels,
+        )
+        return result
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
 client_tools = ClientTools()
 
 client_tools.register("addJiraComment", add_jira_comment_tool)
+client_tools.register("createJiraTicket", create_jira_ticket_tool)
 
 conversation = Conversation(
     # API client and agent ID.
