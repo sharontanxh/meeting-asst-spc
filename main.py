@@ -1,8 +1,10 @@
 import tkinter as tk
 import threading
 import time
+import os
+import glob
 from dotenv import load_dotenv
-from transcription import TranscriptionManager
+from transcription import ElevenLabsTranscriptionManager
 from agent_flow import AgentManager
 
 class MeetingAssistantApp:
@@ -16,7 +18,7 @@ class MeetingAssistantApp:
         self.meeting_transcript = ""
         
         # Initialize managers
-        self.transcription_manager = TranscriptionManager(
+        self.transcription_manager = ElevenLabsTranscriptionManager(
             callback_new_text=self.on_new_transcript
         )
         self.agent_manager = AgentManager(
@@ -72,6 +74,7 @@ class MeetingAssistantApp:
     
     def on_new_transcript(self, new_text):
         """Callback when new transcript text is available"""
+        print(f"[Callback Main] on_new_transcript received text (length {len(new_text)}): '{new_text[:100]}...'") # Log callback received
         self.meeting_transcript += new_text
     
     def activate_agent(self):
@@ -87,6 +90,11 @@ class MeetingAssistantApp:
         # Update status
         self.status_label.config(text="Agent Active", fg="blue")
         
+        # --- Debug: Print transcript before passing to agent ---
+        print(f"Activating agent with transcript (length {len(self.meeting_transcript)}):")
+        print(f"'{self.meeting_transcript[:500]}{'...' if len(self.meeting_transcript) > 500 else ''}'") 
+        # --- End Debug ---
+
         # Run agent in a separate thread
         agent_thread = threading.Thread(
             target=lambda: self.agent_manager.run_agent(self.meeting_transcript)

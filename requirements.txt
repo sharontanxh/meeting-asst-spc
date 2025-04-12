@@ -5,4 +5,7 @@ requests
 pinecone
 openai
 tqdm
-tkinter
+pyaudio
+requests
+wave
+anthropic
