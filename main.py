@@ -1,24 +1,41 @@
-import tkinter as tk
-import threading
-import time
 import os
 import glob
+import threading
+import time
 from dotenv import load_dotenv
-from transcription import ElevenLabsTranscriptionManager
+import customtkinter as ctk
+from transcription import ElevenLabsTranscriptionManager as TranscriptionManager
 from agent_flow import AgentManager
+
+# Define Icons
+ICON_START = "🎙️"
+ICON_STOP = "⏹️"
+ICON_AGENT = "✨"
+
+# Define Status Indicator Characters
+STATUS_RED = "🔴"
+STATUS_GREEN = "🟢"
+STATUS_BLUE = "🔵"
+STATUS_BLACK = "⚫"
 
 class MeetingAssistantApp:
     def __init__(self, root):
         # Initialize the main window
         self.root = root
-        self.root.title("Meeting Assistant")
-        self.root.geometry("400x300")
+        self.root.title("Alex")
+        
+        # Set appearance mode and default color theme
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
+        
+        # Configure window transparency
+        self.root.attributes("-alpha", 0.9)  # 90% opacity
         
         # Global state
         self.meeting_transcript = ""
         
         # Initialize managers
-        self.transcription_manager = ElevenLabsTranscriptionManager(
+        self.transcription_manager = TranscriptionManager(
             callback_new_text=self.on_new_transcript
         )
         self.agent_manager = AgentManager(
@@ -27,103 +44,160 @@ class MeetingAssistantApp:
         
         # Set up UI
         self.setup_ui()
+        
+        # Resize window to fit content
+        self.root.update()
+        self.root.minsize(self.root.winfo_width(), self.root.winfo_height())
     
     def setup_ui(self):
-        # Status display
-        status_frame = tk.Frame(self.root)
-        status_frame.pack(pady=10)
+        # Main frame with minimal padding
+        self.main_frame = ctk.CTkFrame(self.root, corner_radius=15, fg_color="#2D2D2D")
+        self.main_frame.pack(fill="both", expand=True, padx=8, pady=8)
         
-        self.status_label = tk.Label(status_frame, text="Not Transcribing", fg="red", font=("Arial", 12))
-        self.status_label.pack()
-        
-        # Create buttons
-        button_frame = tk.Frame(self.root)
-        button_frame.pack(pady=20)
-        
-        self.transcription_button = tk.Button(
-            button_frame, 
-            text="Start Transcribing", 
-            command=self.toggle_transcription
+        # Status display at top
+        self.status_label = ctk.CTkLabel(
+            self.main_frame, 
+            text=f"{STATUS_RED} Not Transcribing",
+            font=ctk.CTkFont(family="Helvetica", size=13, weight="bold"),
+            text_color="#FFFFFF"
         )
-        self.transcription_button.grid(row=0, column=0, padx=10)
+        self.status_label.pack(anchor="center", pady=(10, 5))
         
-        self.agent_button = tk.Button(
-            button_frame, 
-            text="Activate Agent", 
-            command=self.activate_agent
+        # Create buttons in vertical layout
+        self.transcription_button = ctk.CTkButton(
+            self.main_frame,
+            text=f"{ICON_START} Start",
+            command=self.toggle_transcription,
+            font=ctk.CTkFont(family="Helvetica", size=12),
+            corner_radius=10,
+            fg_color="#444444",
+            hover_color="#555555",
+            border_width=1,
+            border_color="#666666",
+            height=30,
+            width=150
         )
-        self.agent_button.grid(row=0, column=1, padx=10)
+        self.transcription_button.pack(pady=(5, 5))
         
-        self.resume_button = tk.Button(
-            button_frame, 
-            text="Resume Transcription",
-            command=self.resume_transcription
+        self.agent_button = ctk.CTkButton(
+            self.main_frame,
+            text=f"{ICON_AGENT} Activate",
+            command=self.activate_agent,
+            font=ctk.CTkFont(family="Helvetica", size=12),
+            corner_radius=10,
+            fg_color="#444444",
+            hover_color="#555555",
+            border_width=1,
+            border_color="#666666",
+            height=30,
+            width=150
         )
-        self.resume_button.grid(row=0, column=2, padx=10)
-    
+        self.agent_button.pack(pady=(0, 10))
+
+    def animate_status(self):
+        """Subtle pulsing animation for the status label"""
+        # Check every 500ms to update animation based on status
+        current_text = self.status_label.cget("text")
+        
+        # Only apply subtle pulsing effect for active states
+        if STATUS_GREEN in current_text or STATUS_BLUE in current_text:
+            # Subtle transparency pulse
+            current_alpha = self.root.attributes("-alpha")
+            new_alpha = 0.85 if current_alpha > 0.88 else 0.9
+            self.root.attributes("-alpha", new_alpha)
+            
+        self.root.after(500, self.animate_status)
+
     def toggle_transcription(self):
         """Toggle transcription on/off"""
         if self.transcription_manager.is_transcribing:
             self.transcription_manager.stop_transcription()
-            self.transcription_button.config(text="Start Transcribing")
-            self.status_label.config(text="Not Transcribing", fg="red")
+            self.transcription_button.configure(text=f"{ICON_START} Start")
+            self.status_label.configure(text=f"{STATUS_RED} Not Transcribing")
         else:
             self.transcription_manager.start_transcription()
-            self.transcription_button.config(text="Stop Transcribing")
-            self.status_label.config(text="Transcribing...", fg="green")
-    
+            self.transcription_button.configure(text=f"{ICON_STOP} Stop")
+            self.status_label.configure(text=f"{STATUS_GREEN} Transcribing...")
+
     def on_new_transcript(self, new_text):
         """Callback when new transcript text is available"""
-        print(f"[Callback Main] on_new_transcript received text (length {len(new_text)}): '{new_text[:100]}...'") # Log callback received
+        print(f"[Callback Main] on_new_transcript received text (length {len(new_text)}): '{new_text[:100]}...'")
         self.meeting_transcript += new_text
     
     def activate_agent(self):
-        """Activate the agent with the current transcript"""
-        # Store current state
-        was_transcribing = self.transcription_manager.is_transcribing
+        """Activate the agent with the current transcript or latest saved transcript in DEBUG mode."""
         
-        # Pause transcription if running
-        if was_transcribing:
-            self.transcription_manager.stop_transcription()
-            self.transcription_button.config(text="Start Transcribing")
-            
-        # Update status
-        self.status_label.config(text="Agent Active", fg="blue")
-        
-        # --- Debug: Print transcript before passing to agent ---
-        print(f"Activating agent with transcript (length {len(self.meeting_transcript)}):")
-        print(f"'{self.meeting_transcript[:500]}{'...' if len(self.meeting_transcript) > 500 else ''}'") 
-        # --- End Debug ---
+        transcript_to_use = "" 
+        debug_mode = os.environ.get("AGENT_DEBUG_MODE", "").lower() == "true"
+        was_transcribing = False
 
-        # Run agent in a separate thread
+        if debug_mode:
+            print("[DEBUG MODE] Agent activated. Loading latest transcript from file.")
+            transcript_dir = "data/transcripts" 
+            try:
+                list_of_files = glob.glob(os.path.join(transcript_dir, "meeting_transcript_*.txt"))
+                if not list_of_files:
+                    print(f"[DEBUG MODE] No transcript files found in '{transcript_dir}'. Using empty transcript.")
+                    transcript_to_use = ""
+                else:
+                    latest_file = max(list_of_files) 
+                    print(f"[DEBUG MODE] Loading transcript from: {latest_file}")
+                    with open(latest_file, 'r', encoding='utf-8') as f:
+                        transcript_to_use = f.read()
+                    print(f"[DEBUG MODE] Loaded transcript length: {len(transcript_to_use)}")
+            except Exception as e:
+                print(f"[DEBUG MODE] Error loading latest transcript: {e}")
+                transcript_to_use = "" 
+        else:
+            print("Agent activated with live transcript.")
+            transcript_to_use = self.meeting_transcript
+            
+            was_transcribing = self.transcription_manager.is_transcribing
+            if was_transcribing:
+                print("Pausing live transcription for agent.")
+                self.transcription_manager.stop_transcription()
+                self.transcription_button.configure(text=f"{ICON_START} Start")
+            
+        self.status_label.configure(text=f"{STATUS_BLUE} Agent Active")
+        
+        print(f"Activating agent with transcript (length {len(transcript_to_use)}):")
+        print(f"'{transcript_to_use[:500]}{'...' if len(transcript_to_use) > 500 else ''}'") 
+
         agent_thread = threading.Thread(
-            target=lambda: self.agent_manager.run_agent(self.meeting_transcript)
+            target=lambda: self.agent_manager.run_agent(transcript_to_use)
         )
         agent_thread.daemon = True
         agent_thread.start()
     
-    def resume_transcription(self):
-        """Resume transcription after agent completes"""
-        if not self.transcription_manager.is_transcribing:
-            self.transcription_manager.start_transcription()
-            self.transcription_button.config(text="Stop Transcribing")
-            self.status_label.config(text="Transcribing...", fg="green")
-    
     def update_status(self, status_text, color="black"):
-        """Update the status label from other threads"""
-        self.root.after(0, lambda: self.status_label.config(text=status_text, fg=color))
+        """Update the status label from other threads using icons"""
+        status_map = {
+            "red": STATUS_RED,
+            "green": STATUS_GREEN,
+            "blue": STATUS_BLUE,
+            "black": STATUS_BLACK
+        }
+        indicator = status_map.get(color.lower(), STATUS_BLACK)
+        self.root.after(0, lambda: self.status_label.configure(text=f"{indicator} {status_text}"))
 
 def main():
-    # Load environment variables from .env file
     load_dotenv()
     
-    # Create the main window
-    root = tk.Tk()
+    # Create the custom tkinter window
+    root = ctk.CTk()
+    
+    # Set window attributes for a more modern look
+    root.title("Meeting Assistant")
+    
+    # Make window dragable without title bar (optional)
+    # root.overrideredirect(True)
+    
+    # Keep on top of other windows like Zoom
+    root.attributes("-topmost", True)
     
     # Create the app
     app = MeetingAssistantApp(root)
     
-    # Start the UI event loop
     root.mainloop()
 
 if __name__ == "__main__":

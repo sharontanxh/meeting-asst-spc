@@ -9,3 +9,4 @@ pyaudio
 requests
 wave
 anthropic
+customtkinter
