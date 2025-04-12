@@ -1,0 +1,316 @@
+# South Park Commons Meeting Transcripts
+## Event Organization and Community Building Team
+
+### Meeting 1: February 15, 2025
+
+**Jon B**: Good morning everyone, uh, thanks for joining. Let's get started with our bi-weekly check-in. First off, how did the Vinod Khosla event go earlier this week?
+
+**Lidia H**: It went really well! We had about, um, 95 attendees which is close to capacity. The Q&A session ran a bit long because everyone was so engaged. I think we need to be a bit more strict with timing next time.
+
+**Megan R**: Yeah, I agree. The feedback forms show 4.8 out of 5 stars average rating. People especially liked the candid nature of his answers about early-stage investing. Couple of minor issues with the microphone cutting out twice, but Sharon fixed it quickly.
+
+**Sam G**: I noticed several new members connecting afterward. These bigger names really help with community building. Oh, and I heard from three members who want to do deep dives after being inspired by something Vinod said about climate tech.
+
+**Jon B**: Great, that's exactly what we want to see. Next up is the Kirsten Green event from Forerunner. Lidia, what's the status there?
+
+**Lidia H**: All set for next Tuesday. We have, um, about 60 RSVPs so far, which is good for a weekday afternoon. We've confirmed the AV setup, and Louise is handling the refreshments. I'm thinking light snacks since it's mid-afternoon.
+
+**Louise G**: Yes, I've arranged for small bites, coffee service, and some sparkling water. Nothing too heavy since it's between lunch and dinner.
+
+**Jon B**: Perfect. Sam, any updates on our regular community programming?
+
+**Sam G**: So, this month we have two founder matching sessions scheduled, one next Thursday and another on the 27th. We also have a technical talk on, err, large language model development next week from one of our ML-focused members. For March, I'm looking to schedule more industry vertical deep dives – we've got interest in fintech, AI agents, and climate tech.
+
+**Jon B**: Sounds good. Oh, I wanted to, uh, bring up something new. Our projector in the main hall is starting to fail. The image quality is degrading, and we had some complaints during the last few events. I think we should consider replacing it.
+
+**Megan R**: I've noticed that too. I can look into new models. Any specific requirements we should consider?
+
+**Jon B**: Yeah, let's go for something with higher lumens and 4K resolution. Our presentations and demos often have detailed visuals.
+
+**Megan R**: Got it. I'll research options and costs and, you know, circle back next meeting with a proposal.
+
+**Jon B**: Great. One more thing before we wrap up - we should start preliminary planning for the Spring hackathon. Anthropic has expressed interest in co-sponsoring something focused on their Claude API.
+
+**Lidia H**: Ooh, that sounds exciting. When are we thinking of scheduling this?
+
+**Jon B**: They suggested mid-April, possibly the weekend of the 11th through 13th.
+
+**Sam G**: That timing works well with our fellowship program schedule. It would be right after our new cohort is settled in.
+
+**Jon B**: Perfect. Megan, can you reach out to Anthropic to start discussing logistics, judges, and prizes?
+
+**Megan R**: Will do. Should I, um, aim for something similar in scale to our winter hackathon?
+
+**Jon B**: Yes, but maybe with more emphasis on the demos and presentation component. Their team seemed interested in seeing what people build with their AI.
+
+**Sam G**: I can help coordinate with our community members who have ML expertise, like Haden.
+
+**Jon B**: Great, let's regroup on this next meeting. Anything else for today?
+
+**Lidia H**: Nothing from me.
+
+**Megan R**: All good here.
+
+**Sam G**: I'm set.
+
+**Jon B**: Perfect. Thanks everyone, have a great weekend!
+
+### Meeting 2: March 1, 2025
+
+**Jon B**: Good morning team! Let's dive in. First, how did the Kirsten Green event go?
+
+**Lidia H**: It was fantastic! We had about 70 people show up, and the conversation was really insightful. Kirsten shared some, um, amazing stories about early investments in companies like Glossier and Away.
+
+**Sam G**: The networking afterward was excellent too. I saw at least five of our members having one-on-ones with her team. Great for relationship building.
+
+**Jon B**: Excellent. Megan, any updates on the projector situation?
+
+**Megan R**: Yes, I've researched several options and put together a proposal. I'm recommending the Epson Pro L30000U laser projector. It's 30,000 lumens, 4K resolution, and has excellent reviews for large venue use. The quote came in at $19,500 including installation.
+
+**Jon B**: That's, uh, a bit higher than I expected. What's driving the cost?
+
+**Megan R**: Well, it's professional grade and meant to last 5+ years of heavy use. The biggest issue is actually the installation. Our ceiling isn't currently structured to support a heavier projector at the optimal angle. We'd need to add a cross-beam.
+
+**Jon B**: I see. What would the timeline look like?
+
+**Megan R**: About a week for the work itself. The contractor I spoke with, Justin, said we'd need to close the main hall during that time.
+
+**Jon B**: That's tricky with our event schedule. When would be the best window?
+
+**Lidia H**: Looking at the calendar, maybe the week of March 10th? We have fewer events scheduled then.
+
+**Sam G**: That would mean rescheduling the technical talk and founder match-up. I can work with that, though.
+
+**Jon B**: Ok, let's plan for that week then. Megan, can you coordinate with Justin to confirm?
+
+**Megan R**: Yes, I'll reach out today and, you know, get everything scheduled.
+
+**Jon B**: Great. Next, let's talk about the upcoming Neal Stephenson panel. Lidia?
+
+**Lidia H**: Yes, so "Imagined Futures" is scheduled for March 26th. We've confirmed all panelists: Neal Stephenson, Ken Liu, Cyan Banister, and Joscha Bach. I'm really excited about this lineup. Cristian and Jon will be moderating.
+
+**Sam G**: That's going to be a huge draw. How many RSVPs so far?
+
+**Lidia H**: We're at 120 and growing. I'm a bit concerned about capacity, honestly.
+
+**Jon B**: Let's cap it at 150 and create a waitlist. We want to make sure everyone has a good experience.
+
+**Lidia H**: Will do. Also, Sharon is coordinating with the AV team to livestream this one, given the interest level.
+
+**Sharon T**: Yes, I've got that covered. We'll need to bring in extra equipment for the stream quality, but I've budgeted for that.
+
+**Jon B**: Perfect. Now, updates on the Anthropic hackathon?
+
+**Megan R**: I've had several calls with their team. They're excited and have confirmed the April 11-13 weekend. They've offered three Claude API experts as judges and a total of $10,000 in prizes. They'd also like to have Neha Kumar open the event with a keynote about their agent capabilities.
+
+**Sam G**: That's great! Have we settled on a theme?
+
+**Megan R**: Yes, "Building with Claude Agents" - focusing on applications that leverage their new agentic capabilities.
+
+**Jon B**: Sounds perfect. How many participants are we aiming for?
+
+**Megan R**: They suggested 50-75, to keep it high quality and make sure everyone gets support from their engineers during the event.
+
+**Jon B**: That works. Sam, how should we handle the registration? Open to all or curated?
+
+**Sam G**: I'd suggest we reserve 50% of spots for SPC members and open the rest to external applicants with relevant experience. That way we maintain our community focus but also bring in fresh perspectives.
+
+**Jon B**: I like that approach. Let's implement it. Anything else we should cover today?
+
+**Lidia H**: Just a reminder that we have the Satya Nadella fireside coming up this Tuesday. Everything is set, but we should all be there early to help with setup.
+
+**Jon B**: Yes, definitely. I'll be there by noon. Ok, I think that covers everything. Great work, everyone!
+
+### Meeting 3: March 15, 2025
+
+**Jon B**: Morning everyone! Let's get started. First, quick update on the projector installation?
+
+**Megan R**: Yes, the work started on Monday. Justin and his team have removed the old projector and are, um, currently installing the support beam. There was a slight delay because they found some electrical wiring that needed to be rerouted, but they're still on track to finish by next Friday.
+
+**Justin G**: Yeah, I can jump in here. The beam installation is going well, but we did uncover some old wiring that wasn't up to code. We're fixing that as we go. The good news is the new projector mount will be much more stable, and we're adding some cable management that will make future maintenance easier.
+
+**Jon B**: That's great to hear. Any impact on our budget?
+
+**Megan R**: The electrical work adds about $1,200, but I had a 10% contingency built in, so we're still within overall budget.
+
+**Jon B**: Perfect. How's the communication been with our members about the space closure?
+
+**Sam G**: I sent out notifications to all members last week, and a reminder yesterday. Most people have been understanding. I've arranged for our smaller conference rooms to be available for those who need meeting space during this time.
+
+**Jon B**: Great. Now, let's talk about the Satya Nadella event. How did that go?
+
+**Lidia H**: It was absolutely fantastic! We had a full house, and Satya was incredibly generous with his time. The discussion around AI infrastructure and Microsoft's vision really resonated with our members. Big thanks to Sharon for fixing that audio issue so quickly.
+
+**Sharon T**: No problem. Just a loose connection on the lavalier mic.
+
+**Sam G**: The feedback has been stellar. Several members mentioned it was the best fireside chat we've ever hosted. And we've already had three Microsoft employees reach out about becoming SPC members.
+
+**Jon B**: That's excellent. Looking ahead, how are we doing with the Neal Stephenson panel preparations?
+
+**Lidia H**: All set for March 26th. We've capped attendance at 150 as discussed, and there's now a waitlist of 45 people. Sharon's team is prepared for the livestream. Louise has arranged for wine and hors d'oeuvres since it's an afternoon into evening event.
+
+**Jon B**: Sounds good. And the Anthropic hackathon planning?
+
+**Megan R**: Registration opened last week. We've already filled all the SPC member slots, and external applications are coming in strong. I'm working with Haden to review those applications based on technical background.
+
+**Haden W**: Yes, we're looking for people with some experience in, uh, LLM application development or agent design. So far the quality of applicants is really high.
+
+**Jon B**: That's great to hear. Have we finalized the schedule and prizes?
+
+**Megan R**: Yes. Kickoff is Friday at 6PM with Neha's keynote, hacking continues through Saturday, and demos will be Sunday afternoon from 2-5PM. First prize is $5,000, second is $3,000, and third is $2,000. Anthropic is also offering API credits to all participants.
+
+**Sam G**: I've also got some good news – Mike Krieger, CPO of Anthropic, has agreed to do an off-the-record fireside chat the Tuesday after the hackathon, April 15th, to discuss the winning projects and share some insights about their product roadmap.
+
+**Jon B**: Wow, that's a major get! Well done, Sam. That will be a great follow-up to the hackathon.
+
+**Sam G**: Thanks! I thought it would be a nice bookend to the event and give our members some exclusive insights.
+
+**Jon B**: Absolutely. Louise, how are we handling food for the hackathon weekend?
+
+**Louise G**: I've arranged catering for all meals. Friday dinner, Saturday breakfast, lunch, and dinner, and Sunday breakfast and lunch. We'll have vegetarian, vegan, and gluten-free options available. I'm also setting up a continuous coffee and snack station.
+
+**Jon B**: Perfect. One other thing – Sharon, can we have someone from your team available to take photos throughout the event and help with the demo livestream?
+
+**Sharon T**: Definitely. I've already scheduled two of our AV techs to be on rotation throughout the weekend, and we'll have full coverage for the demos on Sunday.
+
+**Jon B**: Great! Anything else we should discuss today?
+
+**Sam G**: Just a quick mention that I'm finalizing the April community events calendar. I'll have the founder deep dives and technical talks scheduled by our next meeting.
+
+**Jon B**: Perfect. I think we're in good shape. Let's reconvene in two weeks!
+
+### Meeting 4: March 29, 2025
+
+**Jon B**: Good morning everyone. Let's get started with updates. First, how did the Neal Stephenson panel go?
+
+**Lidia H**: It was incredible! Full house, amazing conversation. Neal and Ken had this fascinating back-and-forth about, um, how science fiction influences tech development. Joscha brought in some thought-provoking perspectives on consciousness and AI. And Cyan added great insights from an investor perspective.
+
+**Sam G**: The livestream numbers were impressive too – over 500 concurrent viewers. We've already had requests to make the recording available.
+
+**Sharon T**: The recording came out great. I'll have it edited by Monday if we want to share it.
+
+**Jon B**: Let's check with the panelists first to make sure they're comfortable with that. Megan, can you reach out?
+
+**Megan R**: Sure thing. I'll email them today.
+
+**Lidia H**: Before we move on, I need to bring up something - the WiFi was spotty over the past few days during the Imagined Futures event. Can we get it fixed in time for the hackathon?
+
+**Jon B**: That's concerning. What happened exactly?
+
+**Lidia H**: The connection dropped completely twice during the livestream, and several attendees complained about slow speeds. This isn't the first time this has happened.
+
+**Sam G**: Yeah, I remember you brought this up after the Nadella event too. Did we ever resolve that?
+
+**Megan R**: I found two tickets related to this problem. Lidia was supposed to call Xfinity to get the WiFi modem reconfigured.
+
+**Lidia H**: Right, I meant to do that but got caught up with event planning. I'll need to follow up on that ASAP.
+
+**Jon B**: This is definitely something we need to address before the hackathon. The last thing we want is connectivity issues with 75 developers trying to use our network simultaneously.
+
+**Lidia H**: You're right. I'll make sure to take care of it.
+
+**Jon B**: Great. Let's make sure to follow up on that WiFi issue - it's critical for the hackathon. Now, update on the projector installation?
+
+**Jon B**: Great. Let's make sure to follow up on that WiFi issue - it's critical for the hackathon. Now, update on the projector installation?
+
+**Megan R**: All complete! Justin's team finished on Thursday, a day ahead of schedule. The new projector looks amazing – we tested it yesterday and the image quality is night and day compared to the old one.
+
+**Justin G**: Yeah, everything went smoothly after we dealt with the electrical issues. The cross-beam is installed, the projector is mounted at the optimal angle, and we added some additional lighting controls that will make presentations look even better.
+
+**Jon B**: Fantastic. We should take some before and after photos for our records. Okay, next big item – the Anthropic hackathon is coming up in two weeks. Where do we stand?
+
+**Megan R**: We've finalized all 75 participants – 38 SPC members and 37 external developers. Haden helped review all the applications, and we have a great mix of backgrounds.
+
+**Haden W**: Yeah, we've got some impressive participants coming. Several ML researchers, folks who've built commercial AI products, even a few who've worked extensively with, you know, Claude API already. Should be a high-caliber event.
+
+**Megan R**: I've sent out all the confirmation emails with details, along with the pre-hackathon survey to understand technical needs. We've coordinated with Anthropic's team on technical support during the event – they're sending five engineers to help participants.
+
+**Jon B**: Excellent. And Louise, food is all set?
+
+**Louise G**: Yes, all catering is confirmed. I've collected dietary restrictions from the survey and adjusted accordingly. We'll have plenty of caffeine and brain food to keep everyone going.
+
+**Jon B**: Perfect. Sharon, are we good with the AV setup for the keynote and demos?
+
+**Sharon T**: All set. We'll have professional recording for Neha's keynote, dedicated support throughout the weekend, and a full livestream setup for the Sunday demos. I've also arranged for photographers to document the event.
+
+**Jon B**: Great. Sam, how about the door access for the weekend?
+
+**Sam G**: I've programmed special Kisi access for all participants from Friday 5PM through Sunday 7PM. Main doors, conference rooms, and bathrooms will all be accessible, but we've locked down the member-only areas.
+
+**Jon B**: Smart. And the post-hackathon fireside with Mike Krieger?
+
+**Sam G**: Confirmed for Tuesday, April 15th at 4PM. We're keeping it smaller – just hackathon participants and SPC members. No recording since it's off the record, but we'll have nice refreshments afterward.
+
+**Jon B**: Sounds perfect. One last thing – what's our communication plan during the hackathon?
+
+**Megan R**: We'll set up a dedicated Slack channel for all participants, plus we'll have an information desk staffed throughout the event. Daily announcements at mealtimes, and emergency contact information provided to everyone.
+
+**Jon B**: Great thinking. Anything else we should cover today?
+
+**Sam G**: I've finalized the April community events calendar. We have two founder matching sessions, three technical talks, and a venture capital pitch practice session all scheduled. Calendar invites have gone out to members.
+
+**Jon B**: Excellent work everyone. We're in great shape for the hackathon. Let's meet once more before it kicks off – how about next Friday for a final check-in?
+
+**Lidia H**: Works for me.
+
+**Megan R**: I'll be here.
+
+**Sam G**: Sounds good.
+
+**Jon B**: Perfect. Thanks everyone!
+
+### Meeting 5: April 12, 2025
+
+**Jon B**: Good morning team! What a week it's been. Let's debrief on the hackathon while it's still fresh.
+
+**Lidia H**: It was amazing! I'm still, um, processing everything. Neha's keynote on Friday was the perfect kickoff – her demo of the new agent capabilities really inspired the participants.
+
+**Megan R**: The energy throughout the weekend was incredible. We had teams working almost 24 hours straight. I don't think I've ever seen such engagement.
+
+**Sam G**: Agreed. The quality of the projects was outstanding. I was especially impressed by the winning team's customer service agent that could handle complex order management while maintaining perfect brand voice.
+
+**Jon B**: Yes, that was remarkable. And the second-place team's research assistant that could synthesize multiple medical papers was incredibly impressive.
+
+**Haden W**: From a technical perspective, the level of sophistication was, you know, much higher than I expected. Several teams found really creative ways to chain agents together to solve complex problems.
+
+**Jon B**: Sharon, how did the demo livestream go?
+
+**Sharon T**: Flawlessly. We had over 700 concurrent viewers at peak, and the recording is already being requested by people who couldn't attend. The setup with four cameras gave us great coverage of both the presenters and their demos.
+
+**Jon B**: That's fantastic. Louise, any feedback on the food and refreshments?
+
+**Louise G**: All positive! Several participants specifically mentioned that having quality food on-site made a huge difference in their productivity. The midnight snack service on Saturday was particularly appreciated.
+
+**Jon B**: Great to hear. Any issues or lessons learned for next time?
+
+**Megan R**: A couple of minor things. Despite our attempts to fix it beforehand, we still had some WiFi congestion and connectivity issues at peak times. Several teams mentioned it slowed them down. We definitely need to get our network infrastructure upgraded before hosting another event of this size. And we should consider having more quiet rooms for teams that want to get away from the main area.
+
+**Sam G**: I also think we could improve the team formation process. Some participants who came solo had trouble finding teams. Maybe next time we could have a more structured matching session at the beginning.
+
+**Jon B**: Good points. Let's document those for planning future hackathons. Now, looking ahead to Tuesday – Mike Krieger's fireside chat. Are we all set for that?
+
+**Sam G**: Yes, everything's confirmed. It's scheduled for 4PM, we've sent reminders to all hackathon participants and SPC members. Mike is excited to discuss the winning projects and share some off-the-record insights about Anthropic's roadmap.
+
+**Jon B**: Perfect. Let's make sure we have someone greeting him when he arrives.
+
+**Lidia H**: I'll handle that. I've also arranged for some nice wine and hors d'oeuvres for the networking afterward.
+
+**Jon B**: Great. Now, let's quickly touch on our regular programming. Sam, how are the April events going?
+
+**Sam G**: All on track. We had a successful founder matching session yesterday, with 15 participants. Next week we have a technical talk on AI inference optimization by one of our ML-focused members. The VC pitch practice session is set for April 22nd with three partners from different firms providing feedback.
+
+**Jon B**: Sounds good. Any other business we should discuss today?
+
+**Megan R**: Just a quick note that the post-hackathon survey went out this morning. I'll compile the results for our next meeting.
+
+**Lidia H**: And I've already had inquiries from three other companies about hosting similar events with us. I think the Anthropic hackathon really put us on the map for high-quality technical events.
+
+**Jon B**: That's excellent news. We should think about how to balance these opportunities with our community focus. But that's a topic for another meeting. Anything else for today?
+
+**Sam G**: Nothing from me.
+
+**Megan R**: I'm all set.
+
+**Lidia H**: All good here.
+
+**Jon B**: Perfect. Great work everyone on making the hackathon such a success. Let's keep the momentum going with the fireside chat on Tuesday, and we'll meet again in two weeks. Thanks all!

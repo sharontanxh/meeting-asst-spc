@@ -1,2 +1,5 @@
 python-dotenv
 requests
+pinecone
+openai
+tqdm
