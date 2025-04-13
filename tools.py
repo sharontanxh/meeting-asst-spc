@@ -6,6 +6,8 @@ from calendar_invite import create_and_send_calendar_invite
 from get_employee_email import get_email_from_assignee
 from jira_ticket import create_jira_ticket
 from knowledge_search import search_knowledge
+from send_email import send_email
+from get_employee_email import get_email_from_assignee
 
 
 class ToolManager:
@@ -37,6 +39,33 @@ class ToolManager:
                 attendees=tool_args.get("attendees", []),
                 organizer_email=tool_args.get("organizer_email"),
             )
+        elif tool_name == "send_email":
+            # Call the imported send_email function
+            # Expects recipient, subject, and body in tool_args
+            recipient = tool_args.get("recipient")
+            subject = tool_args.get("subject")
+            body = tool_args.get("body")
+            
+            if not all([recipient, subject, body]):
+                 return json.dumps({"success": False, "error": "Missing required arguments: recipient, subject, or body."}) 
+            
+            result_dict = send_email(
+                recipient=recipient,
+                subject=subject,
+                body=body
+            )
+            return json.dumps(result_dict) # Return result as JSON string
+        elif tool_name == "get_employee_email":
+            assignee_name = tool_args.get("assignee_display_name")
+            if not assignee_name:
+                return json.dumps({"success": False, "error": "Missing assignee_display_name argument."})
+            
+            email = get_email_from_assignee(assignee_name)
+            
+            if email:
+                return json.dumps({"success": True, "email": email})
+            else:
+                return json.dumps({"success": False, "error": f"Email not found for assignee: {assignee_name}"})
         else:
             return {"error": f"Unknown tool: {tool_name}"}
 

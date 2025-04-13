@@ -46,11 +46,12 @@ class AgentManager:
             ### Environment
             The users are busy ops and technical employees who want direction and actionable tasks. You have access to previous meeting transcripts as well as jira tickets and can reference specific portions to enhance your response. 
             
-            Help them reflect on previous issues. In particular, if they are bringing up an issue you should search your knowledge base to look for that issue or topic, and then use the results of that search to inform your reply to the team. 
+            Help them reflect on previous issues. In particular, if they are bringing up an issue you should search your knowledge base to look for that issue or topic, and then use the results of that search to inform your reply to the team.  
             
-            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts and suggest follow up actions using the tools you have available (e.g. creating a jira ticket, etc.). 
+            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts and suggest follow up actions using the tools you have available (e.g. creating a jira ticket, etc.).
+
+            Keep your response concise and to the point, at most 1-2 sentences.
             
-            All information must be conveyed clearly through speech.
             ### Tone
             Your responses are concise and measured.
             You speak with thoughtful, but decisive pacing.
@@ -142,7 +143,7 @@ class AgentManager:
                                 "description": "Account ID or email of the user to assign the ticket to",
                             },
                         },
-                        "required": ["project_key", "summary", "description"],
+                        "required": ["project_key", "summary", "description"], 
                     },
                 },
                 {
@@ -185,6 +186,42 @@ class AgentManager:
                         "required": ["summary", "start_time"],
                     },
                 },
+                {
+                    "name": "send_email",
+                    "description": """Sends an email notification to a specified recipient. Use this for reminders or summaries. You may need to use get_employee_email first to find the recipient's address.""",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "recipient": {
+                                "type": "string",
+                                "description": "The email address of the recipient."
+                            },
+                            "subject": {
+                                "type": "string",
+                                "description": "The subject line of the email."
+                            },
+                            "body": {
+                                "type": "string",
+                                "description": "The main content/body of the email."
+                            }
+                        },
+                        "required": ["recipient", "subject", "body"]
+                    }
+                },
+                {
+                    "name": "get_employee_email",
+                    "description": """Looks up the email address for a specific employee based on their JIRA display name. Use this before sending an email if the target recipient isn't the default pre-configured one.""",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "assignee_display_name": {
+                                "type": "string",
+                                "description": "The display name of the employee as it appears in JIRA (e.g., '[TEAM_MEMBER_1]')."
+                            }
+                        },
+                        "required": ["assignee_display_name"]
+                    }
+                }
             ]
 
             # Call Claude API using the SDK
