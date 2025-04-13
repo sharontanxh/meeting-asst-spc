@@ -1,0 +1,3 @@
+Lidia, the Wifi was spotty over the past few days. I think it's super important for the hackathon that we're planning, and I'm pretty sure we've run into this kind of issue before... Can we get it fixed in time for the hackathon? 
+
+Hey Alex, what do you think of this problem? Is there any context that might be helpful for this on previous meetings or tickets? I'm trying to remember the last time we talked about this.
