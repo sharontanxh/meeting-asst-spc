@@ -48,7 +48,7 @@ class AgentManager:
             
             Help them reflect on previous issues. In particular, if they are bringing up an issue you should search your knowledge base to look for that issue or topic, and then use the results of that search to inform your reply to the team.  
             
-            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts and suggest follow up actions using the tools you have available (e.g. creating a jira ticket, etc.).
+            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts and suggest follow up actions using the tools you have available (e.g. creating a jira ticket, sending a calendar invite and email to the relevant stakeholders to remind them, etc.).
 
             Keep your response concise and to the point, at most 1-2 sentences.
             
@@ -84,14 +84,23 @@ class AgentManager:
                 self.callback_status_update(error_msg, "red")
             return None
 
-    def run_agent(self, transcript):
-        """Run the agent with the meeting transcript context"""
+    def run_agent(self, transcript, on_agent_response=None):
+        """
+        Run the agent with the meeting transcript context
+
+        Args:
+            transcript: The current meeting transcript text
+            on_agent_response: Optional callback function that will be called with the agent's final response
+
+        Returns:
+            The agent's final response text
+        """
         # Add this check to ensure client exists before proceeding
         if not self.anthropic_client:
             print("Anthropic client not initialized (check API key). Cannot run agent.")
             if self.callback_status_update:
                 self.callback_status_update("Error: Anthropic client missing", "red")
-            return
+            return None
 
         try:
             # Update status
@@ -99,7 +108,6 @@ class AgentManager:
                 self.callback_status_update("Agent Processing...", "blue")
 
             # Prepare initial messages for Claude API
-
             user_message = f"Here's the transcript of our meeting so far:\n\n{transcript}\n\nCheck for the most recent message asking for your help and respond to it."
             initial_messages = [{"role": "user", "content": user_message}]
 
@@ -143,7 +151,7 @@ class AgentManager:
                                 "description": "Account ID or email of the user to assign the ticket to",
                             },
                         },
-                        "required": ["project_key", "summary", "description"], 
+                        "required": ["project_key", "summary", "description"],
                     },
                 },
                 {
@@ -194,19 +202,19 @@ class AgentManager:
                         "properties": {
                             "recipient": {
                                 "type": "string",
-                                "description": "The email address of the recipient."
+                                "description": "The email address of the recipient.",
                             },
                             "subject": {
                                 "type": "string",
-                                "description": "The subject line of the email."
+                                "description": "The subject line of the email.",
                             },
                             "body": {
                                 "type": "string",
-                                "description": "The main content/body of the email."
-                            }
+                                "description": "The main content/body of the email.",
+                            },
                         },
-                        "required": ["recipient", "subject", "body"]
-                    }
+                        "required": ["recipient", "subject", "body"],
+                    },
                 },
                 {
                     "name": "get_employee_email",
@@ -216,12 +224,12 @@ class AgentManager:
                         "properties": {
                             "assignee_display_name": {
                                 "type": "string",
-                                "description": "The display name of the employee as it appears in JIRA (e.g., '[TEAM_MEMBER_1]')."
+                                "description": "The display name of the employee as it appears in JIRA (e.g., '[TEAM_MEMBER_1]').",
                             }
                         },
-                        "required": ["assignee_display_name"]
-                    }
-                }
+                        "required": ["assignee_display_name"],
+                    },
+                },
             ]
 
             # Call Claude API using the SDK
@@ -259,22 +267,21 @@ class AgentManager:
                 response, initial_messages, tools
             )
 
-            # Generate and play speech if text is available
-            if final_text:
-                if self.callback_status_update:
-                    self.callback_status_update("Agent Speaking...", "blue")
-                self._generate_and_play_speech(final_text)
-            else:
-                print("Agent finished but produced no text response.")
-
             # Update status when complete
             if self.callback_status_update:
                 self.callback_status_update("Agent Complete", "green")
+
+            # Call the callback function with the agent's response if provided
+            if on_agent_response and final_text:
+                on_agent_response(final_text)
+
+            return final_text
 
         except Exception as e:
             print(f"Agent error: {e}")
             if self.callback_status_update:
                 self.callback_status_update(f"Error: {str(e)[:30]}...", "red")
+            return None
 
     def _process_claude_response(self, response, current_messages, tools):
         """Process the Claude response, handling tool calls if necessary."""
