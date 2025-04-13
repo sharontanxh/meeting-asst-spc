@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import requests
 from dotenv import load_dotenv
@@ -9,14 +10,16 @@ load_dotenv()
 JIRA_DOMAIN: str = os.environ["JIRA_DOMAIN"]
 JIRA_EMAIL: str = os.environ["JIRA_EMAIL"]
 JIRA_API_TOKEN: str = os.environ["JIRA_API_TOKEN"]
+PROJECT_KEY: str = "SCRUM"
 
 
 def create_jira_ticket(
-    project_key: str,
     summary: str,
     description: str,
     issue_type: str = "Task",
     labels: list = [],
+    project_key: str = PROJECT_KEY,
+    assignee: str | None = None,
 ) -> dict:
     """
     Create a new Jira ticket.
@@ -27,6 +30,7 @@ def create_jira_ticket(
         description: The detailed description of the ticket
         issue_type: The type of issue (default: "Task")
         labels: List of labels to add to the ticket
+        assignee: Account ID or email of the user to assign the ticket to (default: None)
 
     Returns:
         dict: Response from Jira API
@@ -38,7 +42,7 @@ def create_jira_ticket(
 
     payload = {
         "fields": {
-            "project": {"key": project_key},
+            "project": {"key": PROJECT_KEY},
             "summary": summary,
             "description": {
                 "type": "doc",
@@ -57,6 +61,11 @@ def create_jira_ticket(
     # Add labels if provided
     if labels:
         payload["fields"]["labels"] = labels
+
+    # Add assignee if provided
+    if assignee:
+        # TODO: Get this part working
+        payload["fields"]["assignee"] = {"name": assignee}
 
     auth = HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
     headers = {"Accept": "application/json", "Content-Type": "application/json"}
@@ -92,8 +101,9 @@ if __name__ == "__main__":
     print(
         create_jira_ticket(
             project_key="SCRUM",
-            summary="Test ticket from API",
+            summary=f"Test ticket from API {datetime.now()}",
             description="This is a test ticket created by the API",
             labels=["test", "api"],
+            assignee="jgoldstein46@gmail.com",
         )
     )
