@@ -48,7 +48,9 @@ class AgentManager:
             
             Help them reflect on previous issues. In particular, if they are bringing up an issue you should search your knowledge base to look for that issue or topic, and then use the results of that search to inform your reply to the team.  
             
-            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts and suggest follow up actions using the tools you have available (e.g. creating a jira ticket, sending a calendar invite and email to the relevant stakeholders to remind them, etc.).
+            For example, if the team is talking about a problem with the water cooler, you would search your knowledge base for information about that topic, "water cooler", and see that it has come up in a previous meeting two weeks prior, as well as a month ago. You would also see that there is a pending jira ticket that is regarding that issue. You would reference both of these in your response, highlighting that the water cooler has been pending and who is responsible for it. Be sure to mention any relevant dates in the tickets you find, as well as from meeting transcripts.
+            
+            Suggest follow up actions using the all the tools you have available (e.g. creating a jira ticket, sending a calendar invite and email to the relevant stakeholders to remind them, etc. in one go).
 
             Keep your response concise and to the point, at most 1-2 sentences.
             
@@ -188,7 +190,7 @@ class AgentManager:
                             "attendees": {
                                 "type": "array",
                                 "items": {"type": "string"},
-                                "description": "List of team member names as they appear in Jira",
+                                "description": "A list of the display names of the employees as they appear in JIRA tickets (e.g., 'TEAM_MEMBER_1').",
                             },
                         },
                         "required": ["summary", "start_time"],
@@ -196,13 +198,13 @@ class AgentManager:
                 },
                 {
                     "name": "send_email",
-                    "description": """Sends an email notification to a specified recipient. Use this for reminders or summaries. You may need to use get_employee_email first to find the recipient's address.""",
+                    "description": """Sends an email notification to a specified recipient.""",
                     "input_schema": {
                         "type": "object",
                         "properties": {
                             "recipient": {
                                 "type": "string",
-                                "description": "The email address of the recipient.",
+                                "description": "The display name of the employee as it appears in JIRA tickets (e.g., 'TEAM_MEMBER_1').",
                             },
                             "subject": {
                                 "type": "string",
@@ -214,20 +216,6 @@ class AgentManager:
                             },
                         },
                         "required": ["recipient", "subject", "body"],
-                    },
-                },
-                {
-                    "name": "get_employee_email",
-                    "description": """Looks up the email address for a specific employee based on their JIRA display name. Use this before sending an email if the target recipient isn't the default pre-configured one.""",
-                    "input_schema": {
-                        "type": "object",
-                        "properties": {
-                            "assignee_display_name": {
-                                "type": "string",
-                                "description": "The display name of the employee as it appears in JIRA (e.g., '[TEAM_MEMBER_1]').",
-                            }
-                        },
-                        "required": ["assignee_display_name"],
                     },
                 },
             ]
