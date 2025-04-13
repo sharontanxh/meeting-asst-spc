@@ -1,6 +1,9 @@
 import json
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Union
 
+from calendar_invite import create_and_send_calendar_invite
+from get_employee_email import get_email_from_assignee
 from jira_ticket import create_jira_ticket
 from knowledge_search import search_knowledge
 
@@ -22,6 +25,17 @@ class ToolManager:
                 issue_type=tool_args.get("issue_type", "Task"),
                 labels=tool_args.get("labels", []),
                 assignee=tool_args.get("assignee"),
+            )
+        elif tool_name == "create_calendar_invite":
+            return self.create_calendar_invite(
+                summary=tool_args["summary"],
+                start_time=tool_args["start_time"],
+                end_time=tool_args.get("end_time"),
+                duration_minutes=tool_args.get("duration_minutes", 60),
+                description=tool_args.get("description", ""),
+                location=tool_args.get("location", ""),
+                attendees=tool_args.get("attendees", []),
+                organizer_email=tool_args.get("organizer_email"),
             )
         else:
             return {"error": f"Unknown tool: {tool_name}"}
@@ -79,6 +93,75 @@ class ToolManager:
             error_result = {
                 "success": False,
                 "message": f"Error creating Jira ticket: {str(e)}",
+            }
+            return json.dumps(error_result)
+
+    def create_calendar_invite(
+        self,
+        summary: str,
+        start_time: str,
+        end_time: Optional[str] = None,
+        duration_minutes: int = 60,
+        description: str = "",
+        location: str = "",
+        attendees: Optional[List[str]] = None,
+        organizer_email: Optional[str] = None,
+    ) -> str:
+        """
+        Create and send a calendar invitation.
+
+        Args:
+            summary: Meeting title
+            start_time: ISO formatted start time (YYYY-MM-DDTHH:MM:SS)
+            end_time: ISO formatted end time (optional if duration_minutes provided)
+            duration_minutes: Duration in minutes (used if end_time not provided)
+            description: Meeting description
+            location: Meeting location or video conference link
+            attendees: List of attendee names as they appear in Jira
+            organizer_email: Email of the meeting organizer
+
+        Returns:
+            str: JSON string with result information
+        """
+        try:
+            # Convert team member names to email addresses
+            attendee_emails = []
+
+            # Process team members if provided
+            if attendees:
+                for attendee in attendees:
+                    email = get_email_from_assignee(attendee)
+                    if email:
+                        attendee_emails.append(email)
+                    else:
+                        print(
+                            f"Warning: Could not find email for team member: {attendee}"
+                        )
+
+            # If no valid attendees, return error
+            if not attendee_emails:
+                return json.dumps(
+                    {
+                        "success": False,
+                        "error": "No valid attendee emails could be determined from the provided team members or additional emails",
+                    }
+                )
+
+            # Call the calendar invite function with resolved emails
+            return create_and_send_calendar_invite(
+                summary=summary,
+                start_time=start_time,
+                end_time=end_time,
+                duration_minutes=duration_minutes,
+                description=description,
+                location=location,
+                attendees=attendee_emails,
+                organizer_email=organizer_email,
+            )
+        except Exception as e:
+            error_result = {
+                "success": False,
+                "error": f"Error creating calendar invite: {str(e)}",
             }
             return json.dumps(error_result)
 

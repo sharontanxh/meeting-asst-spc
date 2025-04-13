@@ -2,13 +2,13 @@ import json
 
 # Placeholder mapping of JIRA display names to email addresses
 ASSIGNEE_EMAIL_MAP = {
-    "[TEAM_MEMBER_1]": "thelorax2011+1@gmail.com",
-    "[TEAM_MEMBER_2]": "thelorax2011+2@gmail.com",
-    "[TEAM_MEMBER_3]": "thelorax2011+3@gmail.com",
-    "[TEAM_MEMBER_4]": "thelorax2011+4@gmail.com",
-    "[TEAM_MEMBER_5]": "thelorax2011+5@gmail.com",
-    "[TEAM_LEAD]": "thelorax2011+tl@gmail.com",
-    "[FACILITIES_MANAGER]": "thelorax2011+fm@gmail.com",
+    "[TEAM_MEMBER_1]": "jgoldstein46+1@gmail.com",
+    "[TEAM_MEMBER_2]": "jgoldstein46+2@gmail.com",
+    "[TEAM_MEMBER_3]": "jgoldstein46+3@gmail.com",
+    "[TEAM_MEMBER_4]": "jgoldstein46+4@gmail.com",
+    "[TEAM_MEMBER_5]": "jgoldstein46+5@gmail.com",
+    "[TEAM_LEAD]": "jgoldstein46+tl@gmail.com",
+    "[FACILITIES_MANAGER]": "jgoldstein46+fm@gmail.com",
     # Add more mappings as needed based on your jira_tickets.json
 }
 

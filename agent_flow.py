@@ -145,6 +145,46 @@ class AgentManager:
                         "required": ["project_key", "summary", "description"],
                     },
                 },
+                {
+                    "name": "create_calendar_invite",
+                    "description": """Create and send a calendar invitation for a meeting.""",
+                    "input_schema": {
+                        "type": "object",
+                        "properties": {
+                            "summary": {
+                                "type": "string",
+                                "description": "The title/summary of the meeting",
+                            },
+                            "start_time": {
+                                "type": "string",
+                                "description": "The meeting start time in ISO format (YYYY-MM-DDTHH:MM:SS)",
+                            },
+                            "end_time": {
+                                "type": "string",
+                                "description": "The meeting end time in ISO format (YYYY-MM-DDTHH:MM:SS); optional if duration_minutes is provided",
+                            },
+                            "duration_minutes": {
+                                "type": "integer",
+                                "description": "Duration of the meeting in minutes (used if end_time is not provided)",
+                                "default": 60,
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Detailed description or agenda for the meeting",
+                            },
+                            "location": {
+                                "type": "string",
+                                "description": "Physical location or virtual meeting link",
+                            },
+                            "attendees": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "List of team member names as they appear in Jira",
+                            },
+                        },
+                        "required": ["summary", "start_time"],
+                    },
+                },
             ]
 
             # Call Claude API using the SDK
