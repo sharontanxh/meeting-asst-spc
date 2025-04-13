@@ -7,7 +7,6 @@ from get_employee_email import get_email_from_assignee
 from jira_ticket import create_jira_ticket
 from knowledge_search import search_knowledge
 from send_email import send_email
-from get_employee_email import get_email_from_assignee
 
 
 class ToolManager:
@@ -40,32 +39,21 @@ class ToolManager:
                 organizer_email=tool_args.get("organizer_email"),
             )
         elif tool_name == "send_email":
-            # Call the imported send_email function
-            # Expects recipient, subject, and body in tool_args
             recipient = tool_args.get("recipient")
             subject = tool_args.get("subject")
             body = tool_args.get("body")
-            
+
             if not all([recipient, subject, body]):
-                 return json.dumps({"success": False, "error": "Missing required arguments: recipient, subject, or body."}) 
-            
-            result_dict = send_email(
-                recipient=recipient,
-                subject=subject,
-                body=body
+                return json.dumps(
+                    {
+                        "success": False,
+                        "error": "Missing required arguments: recipient, subject, or body.",
+                    }
+                )
+
+            return self.send_email_message(
+                recipient=recipient, subject=subject, body=body
             )
-            return json.dumps(result_dict) # Return result as JSON string
-        elif tool_name == "get_employee_email":
-            assignee_name = tool_args.get("assignee_display_name")
-            if not assignee_name:
-                return json.dumps({"success": False, "error": "Missing assignee_display_name argument."})
-            
-            email = get_email_from_assignee(assignee_name)
-            
-            if email:
-                return json.dumps({"success": True, "email": email})
-            else:
-                return json.dumps({"success": False, "error": f"Email not found for assignee: {assignee_name}"})
         else:
             return {"error": f"Unknown tool: {tool_name}"}
 
@@ -203,3 +191,37 @@ class ToolManager:
         except ValueError:
             # Handle non-ISO format times
             return f"start_time + {duration_minutes} minutes"
+
+    def send_email_message(self, recipient: str, subject: str, body: str) -> str:
+        """
+        Send an email to a recipient. Can handle both direct email addresses and employee display names.
+
+        Args:
+            recipient: Email address or employee display name
+            subject: Email subject line
+            body: Email body content
+
+        Returns:
+            str: JSON string with result information
+        """
+        try:
+            # Check if recipient is an employee name rather than an email address
+            if "@" not in recipient:
+                # Try to resolve employee name to email address
+                email = get_email_from_assignee(recipient)
+                if email:
+                    recipient = email
+                else:
+                    return json.dumps(
+                        {
+                            "success": False,
+                            "error": f"Could not resolve email address for: {recipient}",
+                        }
+                    )
+
+            # Call the imported send_email function
+            result_dict = send_email(recipient=recipient, subject=subject, body=body)
+            return json.dumps(result_dict)
+        except Exception as e:
+            error_result = {"success": False, "error": f"Error sending email: {str(e)}"}
+            return json.dumps(error_result)
