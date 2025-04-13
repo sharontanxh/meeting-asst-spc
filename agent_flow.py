@@ -205,6 +205,7 @@ class AgentManager:
         # Process this response and any follow-up responses with tool calls
         def process_response(response, messages, accumulated_text=""):
             tool_calls_made = False
+            search_knowledge_called = False
             response_text = ""
             assistant_responses = []
 
@@ -217,6 +218,10 @@ class AgentManager:
                     )
                 elif content_block.type == "tool_use":
                     tool_calls_made = True
+                    # Check if search_knowledge was called
+                    if content_block.name == "search_knowledge":
+                        search_knowledge_called = True
+
                     # Add tool request to messages for context in follow-up
                     assistant_responses.append(
                         {
@@ -273,6 +278,11 @@ class AgentManager:
 
             # Add the tool results message to the history
             messages.append({"role": "user", "content": tool_results_content})
+
+            # Only continue recursion if search_knowledge was called
+            if not search_knowledge_called:
+                print("Non-search_knowledge tool used, stopping recursion")
+                return accumulated_text + response_text, messages
 
             # Call Claude again with the tool results
             print("Calling Claude again with tool results...")
