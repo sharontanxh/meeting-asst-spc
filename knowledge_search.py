@@ -1,3 +1,4 @@
+import json
 import os
 from typing import Any, Dict, List, Optional, Union
 
@@ -12,6 +13,9 @@ PINECONE_API_KEY = os.environ["PINECONE_API_KEY"]
 PINECONE_ENVIRONMENT = os.environ["PINECONE_ENVIRONMENT"]
 PINECONE_INDEX_HOST = os.environ["PINECONE_INDEX_HOST"]
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
+
+# Path to the meeting map JSON file
+MEETING_MAP_PATH = os.path.join("data", "meeting_map.json")
 
 openai_client = OpenAI()
 
@@ -154,37 +158,202 @@ def get_embedding(text, model=OPENAI_EMBEDDING_MODEL):
         return None
 
 
+def process_knowledge_search_results(raw_jira_results, raw_meeting_results, query):
+    """
+    Process and combine search results from Jira tickets and meeting transcripts.
+
+    Args:
+        raw_jira_results: The raw results from searching Jira tickets
+        raw_meeting_results: The raw results from searching meeting transcripts
+        query: The original search query
+
+    Returns:
+        A JSON string containing the combined search results
+    """
+    # Initialize results container
+    all_results = []
+    success = True
+    error_message = ""
+
+    # Load meeting map for transcript lookup
+    meeting_map = {}
+    try:
+        if os.path.exists(MEETING_MAP_PATH):
+            with open(MEETING_MAP_PATH, "r") as f:
+                meeting_map = json.load(f)
+    except Exception as e:
+        error_message += f"Failed to load meeting map: {str(e)} "
+
+    # Process Jira results
+    if raw_jira_results.get("success", False):
+        jira_matches = raw_jira_results.get("results", {}).get("matches", [])
+        for match in jira_matches:
+            metadata = match.get("metadata", {})
+
+            # Add source type if not already present
+            if "source_type" not in metadata:
+                metadata["source_type"] = "jira_ticket"
+
+            result = {
+                "id": match.get("id", "unknown"),
+                "score": match.get("score", 0),
+                "metadata": metadata,
+                "type": "jira",
+            }
+            all_results.append(result)
+    else:
+        # If Jira search failed, capture error but continue with meeting results
+        success = raw_jira_results.get("success", False)
+        error_message += raw_jira_results.get("message", "Jira search failed")
+
+    # Process meeting transcript results
+    if raw_meeting_results.get("success", False):
+        meeting_matches = raw_meeting_results.get("results", {}).get("matches", [])
+        for match in meeting_matches:
+            metadata = match.get("metadata", {})
+            meeting_id = match.get("id", "")
+
+            # Add source type if not already present
+            if "source_type" not in metadata:
+                metadata["source_type"] = "meeting_transcript"
+
+            # Add raw transcript text from meeting map if available
+            if meeting_id in meeting_map:
+                metadata["raw_text"] = meeting_map[meeting_id]
+
+            result = {
+                "id": meeting_id,
+                "score": match.get("score", 0),
+                "metadata": metadata,
+                "type": "meeting",
+            }
+            all_results.append(result)
+    else:
+        # If meeting search failed, capture error
+        if success:  # Only override success if it was true before
+            success = raw_meeting_results.get("success", False)
+        error_message += " " + raw_meeting_results.get(
+            "message", "Meeting transcript search failed"
+        )
+
+    # Sort results by score (descending)
+    all_results.sort(key=lambda x: x.get("score", 0), reverse=True)
+
+    # Create the final response
+    response = {
+        "success": success,
+        "query": query,
+        "results_count": len(all_results),
+        "results": all_results,
+    }
+
+    # Add error message if there was an error
+    if error_message:
+        response["message"] = error_message.strip()
+
+    # Return as JSON string
+    return json.dumps(response, indent=2)
+
+
 def search_knowledge(query: str, top_k=3):
+    """
+    Search the knowledge base for information related to the query.
+    Searches both Jira tickets and meeting transcripts and combines the results.
+
+    Args:
+        query: The search query text
+        top_k: The number of top results to return for each source
+
+    Returns:
+        A JSON string containing the combined search results
+    """
     vector = get_embedding(query)
-    assert vector is not None
-    return search_pinecone(
-        vector, PINECONE_API_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX_HOST, top_k=top_k
+    if vector is None:
+        return json.dumps(
+            {
+                "success": False,
+                "message": "Failed to generate embedding for query",
+                "query": query,
+                "results_count": 0,
+                "results": [],
+            }
+        )
+
+    # Search for Jira tickets
+    raw_jira_results = search_pinecone(
+        vector,
+        PINECONE_API_KEY,
+        PINECONE_ENVIRONMENT,
+        PINECONE_INDEX_HOST,
+        top_k=top_k,
+        filter={"source": {"$eq": "jira_ticket"}},
+    )
+
+    # Search for meeting transcripts
+    raw_meeting_results = search_pinecone(
+        vector,
+        PINECONE_API_KEY,
+        PINECONE_ENVIRONMENT,
+        PINECONE_INDEX_HOST,
+        top_k=top_k,
+        filter={"source": {"$eq": "meeting_transcript"}},
+    )
+
+    # Process and combine the results
+    return process_knowledge_search_results(
+        raw_jira_results, raw_meeting_results, query
     )
 
 
 if __name__ == "__main__":
     # Example usage
     # This is just an example vector - replace with your actual vector
-    example_vector = get_embedding("Wifi is not working")
-    assert example_vector is not None
 
-    print("Searching Pinecone...")
-    results = search_pinecone(
-        query_vector=example_vector,
-        api_key=PINECONE_API_KEY,
-        environment=PINECONE_ENVIRONMENT,
-        index_host=PINECONE_INDEX_HOST,
-        top_k=3,
-        include_values=True,
-    )
+    # Test the search_knowledge function with a sample query
+    test_query = "WiFi not working"
+    print(f"Testing search_knowledge with query: '{test_query}'")
 
-    if results["success"]:
-        print(f"Found {len(results['results']['matches'])} matches:")
-        for i, match in enumerate(results["results"]["matches"]):
-            print(f"\nMatch {i+1}:")
-            print(f"ID: {match['id']}")
-            print(f"Score: {match['score']}")
-            if "metadata" in match:
-                print(f"Metadata: {match['metadata']}")
+    # Call the search_knowledge function
+    results_json = search_knowledge(test_query)
+
+    # Parse the JSON to print in a more readable format
+    results = json.loads(results_json)
+
+    print(f"\nSearch successful: {results['success']}")
+    print(f"Query: {results['query']}")
+    print(f"Results count: {results['results_count']}")
+
+    # Print the first few results
+    if results["results_count"] > 0:
+        print("\nTop results:")
+        for i, result in enumerate(results["results"]):  # Show top 3 results
+            print(f"\nResult {i+1} (Type: {result['type']}):")
+            print(f"  ID: {result['id']}")
+            print(f"  Score: {result['score']:.4f}")
+
+            # Print key metadata fields
+            metadata = result["metadata"]
+
+            # Print metadata summary based on result type
+            if result["type"] == "jira":
+                if "summary" in metadata:
+                    print(f"  Summary: {metadata['summary']}")
+                elif "title" in metadata:
+                    print(f"  Title: {metadata['title']}")
+
+                if "status" in metadata:
+                    print(f"  Status: {metadata['status']}")
+                if "assignee" in metadata:
+                    print(f"  Assignee: {metadata['assignee']}")
+            elif result["type"] == "meeting":
+                if "raw_text" in metadata:
+                    # Print first 100 characters of raw text
+                    raw_text = metadata["raw_text"]
+                    print(f"  Raw Text: {raw_text}")
+
+            # Print text snippet if available for either type
+            if "text_snippet" in metadata:
+                snippet = metadata["text_snippet"]
+                print(f"  Snippet: {snippet}")
     else:
-        print(f"Error: {results['message']}")
+        print("No results found.")
